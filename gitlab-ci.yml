@@ -1,0 +1,25 @@
+stages:
+  - build
+#  - acceptance
+
+build:
+  stage: build
+  image: php:8-cli
+  services:
+    - docker:dind
+  script:
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE
+    - docker push $CI_REGISTRY_IMAGE
+
+# acceptance:
+#   image: cabify/challenge:latest
+#   stage: acceptance
+#   only:
+#     - master
+#   dependencies: []
+#   services:
+#     - name: ${CI_REGISTRY_IMAGE}:latest
+#       alias: pooling
+#   script:
+#     - /harness --address http://pooling:9091 acceptance
