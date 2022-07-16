@@ -1,0 +1,6 @@
+test:
+    path: test
+    methods: [GET]
+    defaults:
+        _controller: App\CarPooling\Infrastructure\UI\Http\Controller\TestController
+

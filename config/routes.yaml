@@ -1,0 +1,12 @@
+controllers:
+    resource: ../src/Controller/
+    type: annotation
+
+kernel:
+    resource: ../src/Kernel.php
+    type: annotation
+
+car_pooling:
+    resource: "../src/CarPooling/Infrastructure/Framework/Symfony/Resources/config/routing.yaml"
+    defaults:
+        _format: json
