@@ -14,4 +14,3 @@ RUN composer install --no-interaction -o
 EXPOSE 8000
 EXPOSE 9091
 
-CMD symfony server:start

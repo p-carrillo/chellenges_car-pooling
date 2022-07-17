@@ -4,7 +4,7 @@ stages:
 
 build:
   stage: build
-  image: php:8-cli
+  image: docker
   services:
     - docker:dind
   script:
