@@ -8,6 +8,6 @@ class TestController
 {
     public function __invoke(): JsonResponse
     {
-        return new JsonResponse('ola ka se');
+        return new JsonResponse('testing symfony');
     }
 }
