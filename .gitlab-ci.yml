@@ -12,18 +12,6 @@ build:
     - docker build . -t ${CI_REGISTRY_IMAGE}:latest
     - docker push ${CI_REGISTRY_IMAGE}:latest
 
-build:
-  stage: build
-  image: docker
-  services:
-    - docker:dind
-  artifacts:
-    paths:
-      - bin/
-  script:
-    - echo do something to build the binary or whatever
-
-
 # acceptance:
 #   image: cabify/challenge:latest
 #   stage: acceptance
