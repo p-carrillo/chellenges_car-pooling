@@ -5,6 +5,8 @@
 
 # Variables
 # UNAME		:= $(shell uname -s)
+DOCKER_IMAGE = car_pooling_image_carrillo
+DOCKER_CONTAINER = car_pooling_container_carrillo
 
 .EXPORT_ALL_VARIABLES:
 
@@ -21,9 +23,6 @@ else
 		$(MAKEFILE_LIST) | grep -v '@awk' | sort
 endif
 
-DOCKER_IMAGE = car_pooling_image_carrillo
-DOCKER_CONTAINER = car_pooling_container_carrillo
-
 # Targets
 #
 .PHONY: debug
@@ -35,13 +34,27 @@ dockerize: build
 	@docker build -t car-pooling-challenge:latest .
 
 
-# Install Project to make it run in local enviroment.
+# Install Project to make it run in local environment.
 install: build up
 	@echo -e '\n\e[32mEnvironment created successfully !\n'
+
+purge: down rm
+	@echo -e '\n\e[32mProject purged successfully !\n'
 
 build:
 	docker build -t $(DOCKER_IMAGE) .
 	docker run -itd -p 8000:8000 --name $(DOCKER_CONTAINER) $(DOCKER_IMAGE)
 
 up:
+	docker start $(DOCKER_CONTAINER)
 	docker exec -it $(DOCKER_CONTAINER) symfony server:start -d
+
+down:
+	docker stop $(DOCKER_CONTAINER)
+
+rm:
+	docker rm $(DOCKER_CONTAINER)
+	docker image rm $(DOCKER_IMAGE)
+
+cache-clear:
+	docker exec -it $(DOCKER_CONTAINER) bin/console cache:clear

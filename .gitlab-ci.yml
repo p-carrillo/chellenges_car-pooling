@@ -9,8 +9,20 @@ build:
     - docker:dind
   script:
     - echo ${CI_JOB_TOKEN} | docker login --password-stdin -u ${CI_REGISTRY_USER} ${CI_REGISTRY}
-    - docker build -t $CI_REGISTRY_IMAGE .
-    - docker push $CI_REGISTRY_IMAGE
+    - docker build . -t ${CI_REGISTRY_IMAGE}:latest
+    - docker push ${CI_REGISTRY_IMAGE}:latest
+
+build:
+  stage: build
+  image: docker
+  services:
+    - docker:dind
+  artifacts:
+    paths:
+      - bin/
+  script:
+    - echo do something to build the binary or whatever
+
 
 # acceptance:
 #   image: cabify/challenge:latest

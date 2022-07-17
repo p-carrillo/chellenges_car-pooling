@@ -1,92 +1,220 @@
-# ci-test
+# Car Pooling Service Challenge
 
+Design/implement a system to manage car pooling.
 
+At Cabify we provide the service of taking people from point A to point B.
+So far we have done it without sharing cars with multiple groups of people.
+This is an opportunity to optimize the use of resources by introducing car
+pooling.
 
-## Getting started
+You have been assigned to build the car availability service that will be used
+to track the available seats in cars.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+Cars have a different amount of seats available, they can accommodate groups of
+up to 4, 5 or 6 people.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+People requests cars in groups of 1 to 6. People in the same group want to ride
+on the same car. You can take any group at any car that has enough empty seats
+for them. If it's not possible to accommodate them, they're willing to wait until 
+there's a car available for them. Once a car is available for a group
+that is waiting, they should ride. 
 
-## Add your files
+Once they get a car assigned, they will journey until the drop off, you cannot
+ask them to take another car (i.e. you cannot swap them to another car to
+make space for another group).
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+In terms of fairness of trip order: groups should be served as fast as possible,
+but the arrival order should be kept when possible.
+If group B arrives later than group A, it can only be served before group A
+if no car can serve group A.
 
+For example: a group of 6 is waiting for a car and there are 4 empty seats at
+a car for 6; if a group of 2 requests a car you may take them in the car.
+This may mean that the group of 6 waits a long time,
+possibly until they become frustrated and leave.
+
+## Evaluation rules
+
+This challenge has a partially automated scoring system. This means that before
+it is seen by the evaluators, it needs to pass a series of automated checks
+and scoring.
+
+### Checks
+
+All checks need to pass in order for the challenge to be reviewed.
+
+- The `acceptance` test step in the `.gitlab-ci.yml` must pass in master before you
+submit your solution. We will not accept any solutions that do not pass or omit
+this step. This is a public check that can be used to assert that other tests 
+will run successfully on your solution. **This step needs to run without 
+modification**
+- _"further tests"_ will be used to prove that the solution works correctly. 
+These are not visible to you as a candidate and will be run once you submit 
+the solution
+
+### Scoring
+
+There is a number of scoring systems being run on your solution after it is 
+submitted. It is ok if these do not pass, but they add information for the
+reviewers.
+
+## API
+
+To simplify the challenge and remove language restrictions, this service must
+provide a REST API which will be used to interact with it.
+
+This API must comply with the following contract:
+
+### GET /status
+
+Indicate the service has started up correctly and is ready to accept requests.
+
+Responses:
+
+* **200 OK** When the service is ready to receive requests.
+
+### PUT /cars
+
+Load the list of available cars in the service and remove all previous data
+(reset the application state). This method may be called more than once during
+the life cycle of the service.
+
+**Body** _required_ The list of cars to load.
+
+**Content Type** `application/json`
+
+Sample:
+
+```json
+[
+  {
+    "id": 1,
+    "seats": 4
+  },
+  {
+    "id": 2,
+    "seats": 6
+  }
+]
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/pablo.carrillo.garcia/ci-test.git
-git branch -M main
-git push -uf origin main
+
+Responses:
+
+* **200 OK** When the list is registered correctly.
+* **400 Bad Request** When there is a failure in the request format, expected
+  headers, or the payload can't be unmarshalled.
+
+### POST /journey
+
+A group of people requests to perform a journey.
+
+**Body** _required_ The group of people that wants to perform the journey
+
+**Content Type** `application/json`
+
+Sample:
+
+```json
+{
+  "id": 1,
+  "people": 4
+}
 ```
 
-## Integrate with your tools
+Responses:
 
-- [ ] [Set up project integrations](https://gitlab.com/pablo.carrillo.garcia/ci-test/-/settings/integrations)
+* **200 OK** or **202 Accepted** When the group is registered correctly
+* **400 Bad Request** When there is a failure in the request format or the
+  payload can't be unmarshalled.
 
-## Collaborate with your team
+### POST /dropoff
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+A group of people requests to be dropped off. Whether they traveled or not.
 
-## Test and Deploy
+**Body** _required_ A form with the group ID, such that `ID=X`
 
-Use the built-in continuous integration in GitLab.
+**Content Type** `application/x-www-form-urlencoded`
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+Responses:
 
-***
+* **200 OK** or **204 No Content** When the group is unregistered correctly.
+* **404 Not Found** When the group is not to be found.
+* **400 Bad Request** When there is a failure in the request format or the
+  payload can't be unmarshalled.
 
-# Editing this README
+### POST /locate
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+Given a group ID such that `ID=X`, return the car the group is traveling
+with, or no car if they are still waiting to be served.
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+**Body** _required_ A url encoded form with the group ID such that `ID=X`
 
-## Name
-Choose a self-explaining name for your project.
+**Content Type** `application/x-www-form-urlencoded`
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+**Accept** `application/json`
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+Responses:
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+* **200 OK** With the car as the payload when the group is assigned to a car. See below for the expected car representation 
+```json
+  {
+    "id": 1,
+    "seats": 4
+  }
+```
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+* **204 No Content** When the group is waiting to be assigned to a car.
+* **404 Not Found** When the group is not to be found.
+* **400 Bad Request** When there is a failure in the request format or the
+  payload can't be unmarshalled.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+## Tooling
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+At Cabify, we use Gitlab and Gitlab CI for our backend development work. 
+In this repo you may find a [.gitlab-ci.yml](./.gitlab-ci.yml) file which
+contains some tooling that would simplify the setup and testing of the
+deliverable. This testing can be enabled by simply uncommenting the final
+acceptance stage. Note that the image build should be reproducible within
+the CI environment.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Additionally, you will find a basic Dockerfile which you could use a
+baseline, be sure to modify it as much as needed, but keep the exposed port
+as is to simplify the testing.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+:warning: Avoid dependencies and tools that would require changes to the 
+`acceptance` step of [.gitlab-ci.yml](./.gitlab-ci.yml), such as 
+`docker-compose`
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+:warning: The challenge needs to be self-contained so we can evaluate it. 
+If the language you are using has limitations that block you from solving this 
+challenge without using a database, please document your reasoning in the 
+readme and use an embedded one such as sqlite.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+You are free to use whatever programming language you deem is best to solve the
+problem but please bear in mind we want to see your best!
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+You can ignore the Gitlab warning "Cabify Challenge has exceeded its pipeline 
+minutes quota," it will not affect your test or the ability to run pipelines on
+Gitlab.
 
-## License
-For open source projects, say how it is licensed.
+## Requirements
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+- The service should be as efficient as possible.
+  It should be able to work reasonably well with at least $`10^4`$ / $`10^5`$ cars / waiting groups.
+  Explain how you did achieve this requirement.
+- You are free to modify the repository as much as necessary to include or remove
+  dependencies, subject to tooling limitations above.
+- Document your decisions using MRs or in this very README adding sections to it,
+  the same way you would be generating documentation for any other deliverable.
+  We want to see how you operate in a quasi real work environment.
+
+## Feedback
+
+In Cabify, we really appreciate your interest and your time. We are highly 
+interested on improving our Challenge and the way we evaluate our candidates. 
+Hence, we would like to beg five more minutes of your time to fill the 
+following survey:
+
+- https://forms.gle/EzPeURspTCLG1q9T7
+
+Your participation is really important. Thanks for your contribution!
