@@ -4,3 +4,10 @@ test:
     defaults:
         _controller: App\CarPooling\Infrastructure\UI\Http\Controller\TestController
 
+cars:
+    path: cars
+    methods: [ PUT ]
+    defaults:
+        _controller: App\CarPooling\Infrastructure\UI\Http\Controller\Cars\PutCarsController
+
+
