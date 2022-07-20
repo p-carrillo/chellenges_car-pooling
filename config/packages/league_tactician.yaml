@@ -1,5 +1,6 @@
 tactician:
     commandbus:
         default:
+        command:
             middleware:
                 - tactician.middleware.command_handler

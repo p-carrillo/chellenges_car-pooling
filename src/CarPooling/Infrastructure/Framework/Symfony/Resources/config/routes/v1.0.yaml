@@ -8,6 +8,6 @@ cars:
     path: cars
     methods: [ PUT ]
     defaults:
-        _controller: App\CarPooling\Infrastructure\UI\Http\Controller\Cars\PutCarsController
+        _controller: App\CarPooling\Infrastructure\UI\Http\Controller\Car\SetCarFleetController
 
 

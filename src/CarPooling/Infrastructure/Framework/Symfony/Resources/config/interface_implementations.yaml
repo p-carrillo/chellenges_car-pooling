@@ -1,0 +1,2 @@
+services:
+  App\Common\Application\CommandBus\CommandBusInterface: '@App\Common\Infrastructure\CommandBus\TacticianCommandBus'

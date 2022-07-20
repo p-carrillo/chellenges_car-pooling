@@ -1,3 +1,6 @@
+imports:
+  - { resource: 'interface_implementations.yaml' }
+
 services:
   _defaults:
     autowire: true
@@ -7,3 +10,8 @@ services:
   App\CarPooling\Infrastructure\UI\Http\Controller\:
     resource: '../../../../UI/Http/Controller/*'
     tags: ['controller.service_arguments']
+
+  App\CarPooling\Application\Command\:
+    resource: '../../../../../Application/Command/*/*/*Handler.php'
+    tags:
+      - {name: 'tactician.handler', typehints: true}
