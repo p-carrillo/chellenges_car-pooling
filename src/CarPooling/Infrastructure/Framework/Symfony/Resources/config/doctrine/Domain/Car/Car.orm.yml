@@ -1,0 +1,13 @@
+App\CarPooling\Domain\Model\Car\Car:
+  type: entity
+  table: car
+  id:
+    id:
+      type: integer
+      length: 36
+      column: id
+  fields:
+    seats:
+      type: integer
+      nullable: false
+      column: seats

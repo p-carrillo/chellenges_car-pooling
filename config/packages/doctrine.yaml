@@ -1,0 +1,27 @@
+doctrine:
+    dbal:
+        default_connection: default
+        connections:
+            default:
+                driver:   pdo_sqlite
+                path:     "%kernel.project_dir%/db/data.sqlite"
+
+        # IMPORTANT: You MUST configure your server version,
+        # either here or in the DATABASE_URL env var (see .env file)
+        #server_version: '13'
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            App:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
+                alias: App
+            Car:
+                is_bundle: false
+                type: yml
+                dir: '%kernel.project_dir%/src/CarPooling/Infrastructure/Framework/Symfony/Resources/config/doctrine/Domain/Car'
+                prefix: 'App\CarPooling\Domain\Model\Car'
+                alias: car

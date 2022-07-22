@@ -12,3 +12,8 @@ services:
     resource: '../../../../../Application/Command/*/*/*Handler.php'
     tags:
       - {name: 'tactician.handler', typehints: true}
+
+  App\CarPooling\Infrastructure\Domain\:
+    resource: '../../../../Domain/*'
+
+  App\CarPooling\Domain\Model\Car\CarRepositoryInterface: '@App\CarPooling\Infrastructure\Domain\Model\Car\DoctrineCarRepository'

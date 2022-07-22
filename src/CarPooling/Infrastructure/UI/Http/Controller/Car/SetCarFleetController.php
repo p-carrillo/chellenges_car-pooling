@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\CarPooling\Infrastructure\UI\Http\Controller\Car;
 
 use App\CarPooling\Application\Command\Car\SetCarFleet\SetCarFleetCommand;
+use App\CarPooling\Domain\Model\Car\CarViewInterface;
 use League\Tactician\CommandBus;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,7 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SetCarFleetController
 {
-
     private CommandBus $commandBus;
 
     public function __construct(CommandBus $commandBus)
@@ -28,8 +28,6 @@ class SetCarFleetController
             $this->commandBus->handle(new SetCarFleetCommand(
                 $input
             ));
-
-            die;
 
             return new JsonResponse(
                 json_encode($input),
