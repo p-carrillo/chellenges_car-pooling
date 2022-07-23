@@ -39,11 +39,20 @@ class DoctrineJourneyRepository extends ServiceEntityRepository implements Journ
 
     public function update(Journey $journey): void
     {
-        $sql = 'UPDATE journey 
-                    SET car_asigned = :car_asigned
-                    WHERE id = :id';
+        $qb = $this->createQueryBuilder('j');
 
-        $this->connection->executeStatement($sql, $this->saveParameters($journey));
+        $qb->update('journey:Journey', 'j')
+            ->set('j.carAssigned', ':carAssigned')
+            ->where('j.id = :id')
+            ->setParameter('id', $journey->id())
+            ->setParameter('carAssigned', $journey->carAssigned())
+            ->getQuery()
+            ->execute();
+    }
+
+    public function reset(): void
+    {
+        $this->connection->executeStatement('DELETE FROM journey');
     }
 
     private function saveParameters(Journey $journey): array

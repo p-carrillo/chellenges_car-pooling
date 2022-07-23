@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\CarPooling\Domain\Model\Car;
 
+use Doctrine\ORM\PersistentCollection;
+
 class Car
 {
     private int $id;
     private int $seats;
     private int $seatsAvailable;
-    private ?array $journeys;
+    private PersistentCollection $journeys;
 
-    public function __construct(int $id, int $seats, int $seatsAvailable, ?array $journeys)
+    public function __construct(int $id, int $seats, int $seatsAvailable, PersistentCollection $journeys)
     {
         $this->id = $id;
         $this->seats = $seats;
@@ -43,4 +45,10 @@ class Car
     {
         return $this->seatsAvailable;
     }
+
+    public function assignedJourneys(): PersistentCollection
+    {
+        return $this->journeys;
+    }
+
 }

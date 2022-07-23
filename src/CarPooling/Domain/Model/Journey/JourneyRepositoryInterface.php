@@ -11,4 +11,6 @@ interface JourneyRepositoryInterface
     public function create(Journey $journey): void;
 
     public function update(Journey $journey): void;
+
+    public function reset(): void;
 }

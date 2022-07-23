@@ -29,21 +29,30 @@ class DoctrineCarRepository extends ServiceEntityRepository implements CarReposi
         return $statement->fetchAssociative();
     }
 
-    public function create(array $carPool): void
+    public function loadCarFleet(array $carFleet): void
     {
         $values = [];
-        foreach ($carPool as $car) {
-            $values[] = '(' . $car->id . ',' . $car->seats . ')';
+        /** @var Car $car */
+        foreach ($carFleet as $car) {
+            $values[] = '('
+                . $car->id() . ','
+                . $car->seats() . ','
+                . $car->seatsAvailable() .
+        ')';
         }
 
-        $sql = 'INSERT INTO car (id, seats) VALUES ' . implode(',', $values);
+        $sql = 'INSERT INTO car (id, seats, seats_available) VALUES ' . implode(',', $values);
 
         $this->connection->executeStatement($sql);
     }
 
     public function update(Car $car): void
     {
+    }
 
+    public function reset(): void
+    {
+        $this->connection->executeStatement('DELETE FROM car');
     }
 
     public function findAvailableCar(int $seatsRequested): ?car

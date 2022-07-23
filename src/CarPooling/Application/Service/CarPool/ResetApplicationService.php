@@ -9,7 +9,7 @@ use App\CarPooling\Domain\Model\Journey\Journey;
 use App\CarPooling\Domain\Model\Journey\JourneyRepositoryInterface;
 
 
-class AssignGroupToCarIfAvailableService
+class ResetApplicationService
 {
     private CarRepositoryInterface $carRepository;
     private JourneyRepositoryInterface $journeyRepository;
@@ -20,21 +20,9 @@ class AssignGroupToCarIfAvailableService
         $this->journeyRepository = $journeyRepository;
     }
 
-    public function execute(Journey $journey)
+    public function execute(): void
     {
-        $car = $this->carRepository->findAvailableCar($journey->people());
-
-        dump($car);
-
-        if (null === $car) {
-            return;
-        }
-
-        $journey->assignCar($car);
-        $this->journeyRepository->update($journey);
-
-        dump($car);
-        dump($journey);
-
+        $this->carRepository->reset();
+        $this->journeyRepository->reset();
     }
 }
