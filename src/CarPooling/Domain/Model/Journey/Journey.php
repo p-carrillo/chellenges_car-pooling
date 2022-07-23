@@ -50,4 +50,9 @@ class Journey
     {
         return $this->carAssigned;
     }
+
+    public function assignCar(Car $car): void
+    {
+        $this->carAssigned = $car;
+    }
 }

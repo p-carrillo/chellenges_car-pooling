@@ -16,5 +16,8 @@ services:
   App\CarPooling\Infrastructure\Domain\:
     resource: '../../../../Domain/*'
 
+  App\CarPooling\Application\Service\:
+    resource: '../../../../../Application/Service/*'
+
   App\CarPooling\Domain\Model\Car\CarRepositoryInterface: '@App\CarPooling\Infrastructure\Domain\Model\Car\DoctrineCarRepository'
   App\CarPooling\Domain\Model\Journey\JourneyRepositoryInterface:  '@App\CarPooling\Infrastructure\Domain\Model\Journey\DoctrineJourneyRepository'

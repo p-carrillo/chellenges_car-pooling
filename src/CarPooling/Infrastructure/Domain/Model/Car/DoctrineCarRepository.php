@@ -4,15 +4,18 @@ namespace App\CarPooling\Infrastructure\Domain\Model\Car;
 
 use App\CarPooling\Domain\Model\Car\Car;
 use App\CarPooling\Domain\Model\Car\CarRepositoryInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
-class DoctrineCarRepository implements CarRepositoryInterface
+class DoctrineCarRepository extends ServiceEntityRepository implements CarRepositoryInterface
 {
     protected Connection $connection;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct( ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
+        parent::__construct($registry, Car::class);
         $this->connection = $entityManager->getConnection();
     }
 
@@ -41,6 +44,17 @@ class DoctrineCarRepository implements CarRepositoryInterface
     public function update(Car $car): void
     {
 
+    }
+
+    public function findAvailableCar(int $seatsRequested): ?car
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->where('c.seatsAvailable >= :seatsAvailable')
+            ->setParameter('seatsAvailable', $seatsRequested)
+            ->orderBy('c.seatsAvailable', 'ASC')
+        ;
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     private function saveParameters(\stdClass $car): array

@@ -6,7 +6,7 @@ namespace App\CarPooling\Domain\Model\Journey;
 
 interface JourneyRepositoryInterface
 {
-    public function getById(int $id): ?Journey;
+    public function getOneById(int $id): ?Journey;
 
     public function create(Journey $journey): void;
 

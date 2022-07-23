@@ -13,15 +13,25 @@ class AssignGroupToCarIfAvailableService
 {
     private CarRepositoryInterface $carRepository;
     private JourneyRepositoryInterface $journeyRepository;
-    private Journey $journey;
 
-    public function __construct()
+    public function __construct(CarRepositoryInterface $carRepository, JourneyRepositoryInterface $journeyRepository)
     {
-
+        $this->carRepository = $carRepository;
+        $this->journeyRepository = $journeyRepository;
     }
 
-    public function execute()
+    public function execute(Journey $journey)
     {
+        $car = $this->carRepository->findAvailableCar($journey->people());
 
+        dump($car);
+//        die;
+
+        if (null === $car) {
+            return;
+        }
+
+        $journey->assignCar($car);
+        $this->journeyRepository->update($journey);
     }
 }

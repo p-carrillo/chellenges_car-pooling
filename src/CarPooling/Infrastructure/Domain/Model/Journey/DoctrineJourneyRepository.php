@@ -19,9 +19,8 @@ class DoctrineJourneyRepository extends ServiceEntityRepository implements Journ
         $this->connection = $entityManager->getConnection();
     }
 
-    public function getById(int $id): ?Journey
+    public function getOneById(int $id): ?Journey
     {
-
         $qb = $this->createQueryBuilder('j')
             ->where('j.id = :id')
             ->setParameter('id', $id)
