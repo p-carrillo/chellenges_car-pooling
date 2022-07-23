@@ -10,4 +10,10 @@ cars:
     defaults:
         _controller: App\CarPooling\Infrastructure\UI\Http\Controller\Car\SetCarFleetController
 
+journey:
+    path: journey
+    methods: [ PUT ]
+    defaults:
+        _controller: App\CarPooling\Infrastructure\UI\Http\Controller\Journey\RequestJourneyController
+
 

@@ -26,13 +26,16 @@ class DoctrineCarRepository implements CarRepositoryInterface
         return $statement->fetchAssociative();
     }
 
-    public function create(\stdClass $car): void
+    public function create(array $carPool): void
     {
+        $values = [];
+        foreach ($carPool as $car) {
+            $values[] = '(' . $car->id . ',' . $car->seats . ')';
+        }
 
-        $sql = 'INSERT INTO car VALUES
-                (:id, :seats)';
+        $sql = 'INSERT INTO car (id, seats) VALUES ' . implode(',', $values);
 
-        $this->connection->executeStatement($sql, $this->saveParameters($car));
+        $this->connection->executeStatement($sql);
     }
 
     public function update(Car $car): void

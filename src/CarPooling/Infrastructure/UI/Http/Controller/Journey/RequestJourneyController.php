@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\CarPooling\Infrastructure\UI\Http\Controller\Car;
+namespace App\CarPooling\Infrastructure\UI\Http\Controller\Journey;
 
 use App\CarPooling\Application\Command\Car\SetCarFleet\SetCarFleetCommand;
+use App\CarPooling\Application\Command\Journey\RequestJourney\RequestJourneyCommand;
 use League\Tactician\CommandBus;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class SetCarFleetController
+class RequestJourneyController
 {
     private CommandBus $commandBus;
 
@@ -24,8 +25,9 @@ class SetCarFleetController
         try {
             $input = json_decode($request->getContent());
 
-            $this->commandBus->handle(new SetCarFleetCommand(
-                $input
+            $this->commandBus->handle(new RequestJourneyCommand(
+                $input->id,
+                $input->people
             ));
 
             return new JsonResponse(

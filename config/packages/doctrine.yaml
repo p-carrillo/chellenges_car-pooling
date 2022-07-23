@@ -25,3 +25,9 @@ doctrine:
                 dir: '%kernel.project_dir%/src/CarPooling/Infrastructure/Framework/Symfony/Resources/config/doctrine/Domain/Car'
                 prefix: 'App\CarPooling\Domain\Model\Car'
                 alias: car
+            Journey:
+                is_bundle: false
+                type: yml
+                dir: '%kernel.project_dir%/src/CarPooling/Infrastructure/Framework/Symfony/Resources/config/doctrine/Domain/Journey'
+                prefix: 'App\CarPooling\Domain\Model\Journey'
+                alias: journey

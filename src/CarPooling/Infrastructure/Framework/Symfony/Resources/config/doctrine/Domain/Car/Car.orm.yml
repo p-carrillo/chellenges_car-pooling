@@ -11,3 +11,11 @@ App\CarPooling\Domain\Model\Car\Car:
       type: integer
       nullable: false
       column: seats
+    seatsAvailable:
+      type: integer
+      nullable: false
+      column: seats_available
+  oneToMany:
+    journeys:
+      targetEntity: App\CarPooling\Domain\Model\Journey\Journey
+      mappedBy: car

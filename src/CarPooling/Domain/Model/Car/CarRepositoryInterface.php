@@ -8,7 +8,7 @@ interface CarRepositoryInterface
 {
     public function getById(int $id): ?array;
 
-    public function create(\stdClass $car): void;
+    public function create(array $carPool): void;
 
     public function update(Car $car): void;
 }

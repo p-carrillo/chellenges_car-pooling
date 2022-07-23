@@ -1,0 +1,21 @@
+App\CarPooling\Domain\Model\Journey\Journey:
+  type: entity
+  table: journey
+  id:
+    id:
+      type: integer
+      length: 36
+      column: id
+  fields:
+    people:
+      type: integer
+      nullable: false
+      column: people
+    dateRequest:
+      type: datetime
+      nullable: false
+      column: date_request
+  manyToOne:
+    carAssigned:
+      targetEntity: App\CarPooling\Domain\Model\Car\Car
+      mappedBy: journey

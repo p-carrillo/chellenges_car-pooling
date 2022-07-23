@@ -8,11 +8,25 @@ class Car
 {
     private int $id;
     private int $seats;
+    private int $seatsAvailable;
+    private ?array $journeys;
 
-    public function __construct(int $id, int $seats)
+    public function __construct(int $id, int $seats, int $seatsAvailable, ?array $journeys)
     {
         $this->id = $id;
         $this->seats = $seats;
+        $this->seatsAvailable = $seatsAvailable;
+        $this->journeys = $journeys;
+    }
+
+    public static function create(int $id, int $seats): self
+    {
+        return new self(
+            $id,
+            $seats,
+            $seats,
+            null
+        );
     }
 
     public function id(): int
@@ -23,5 +37,10 @@ class Car
     public function seats(): int
     {
         return $this->seats;
+    }
+
+    public function seatsAvailable(): int
+    {
+        return $this->seatsAvailable;
     }
 }

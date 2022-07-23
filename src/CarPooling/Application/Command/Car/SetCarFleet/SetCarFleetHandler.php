@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\CarPooling\Application\Command\Car\SetCarFleet;
 
-use App\CarPooling\Domain\Model\Car\Car;
 use App\CarPooling\Domain\Model\Car\CarRepositoryInterface;
 
 class SetCarFleetHandler
@@ -18,8 +17,6 @@ class SetCarFleetHandler
 
     public function handle(SetCarFleetCommand $command): void
     {
-        foreach ($command->carFleet() as $car) {
-            $this->repository->create($car);
-        }
+        $this->repository->create($command->carFleet());
     }
 }
