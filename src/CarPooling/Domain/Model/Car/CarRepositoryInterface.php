@@ -6,7 +6,7 @@ namespace App\CarPooling\Domain\Model\Car;
 
 interface CarRepositoryInterface
 {
-    public function getById(int $id): ?array;
+    public function getOneById(int $id): ?car;
 
     public function loadCarFleet(array $carFleet): void;
 

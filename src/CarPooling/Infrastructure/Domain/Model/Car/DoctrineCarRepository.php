@@ -19,14 +19,14 @@ class DoctrineCarRepository extends ServiceEntityRepository implements CarReposi
         $this->connection = $entityManager->getConnection();
     }
 
-    public function getById(int $id): ?array
+    public function getOneById(int $id): ?car
     {
-        $statement = $this->connection->executeQuery(
-            'SELECT * FROM car WHERE id = :id',
-            ['id' => $id]
-        );
+        $qb = $this->createQueryBuilder('c')
+            ->where('c.id = :id')
+            ->setParameter('id', $id)
+        ;
 
-        return $statement->fetchAssociative();
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     public function loadCarFleet(array $carFleet): void
@@ -48,6 +48,15 @@ class DoctrineCarRepository extends ServiceEntityRepository implements CarReposi
 
     public function update(Car $car): void
     {
+        $qb = $this->createQueryBuilder('c');
+
+        $qb->update('car:Car', 'c')
+            ->set('c.seatsAvailable', ':seatsAvailable')
+            ->where('c.id = :id')
+            ->setParameter('id', $car->id())
+            ->setParameter('seatsAvailable', $car->seatsAvailable())
+            ->getQuery()
+            ->execute();
     }
 
     public function reset(): void
@@ -61,6 +70,7 @@ class DoctrineCarRepository extends ServiceEntityRepository implements CarReposi
             ->where('c.seatsAvailable >= :seatsAvailable')
             ->setParameter('seatsAvailable', $seatsRequested)
             ->orderBy('c.seatsAvailable', 'ASC')
+            ->setMaxResults(1)
         ;
 
         return $qb->getQuery()->getOneOrNullResult();

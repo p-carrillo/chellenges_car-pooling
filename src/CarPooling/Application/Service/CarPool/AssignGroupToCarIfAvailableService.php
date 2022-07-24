@@ -24,17 +24,14 @@ class AssignGroupToCarIfAvailableService
     {
         $car = $this->carRepository->findAvailableCar($journey->people());
 
-        dump($car);
-
         if (null === $car) {
             return;
         }
 
         $journey->assignCar($car);
+        $car->setSeatsAvailable($car->seatsAvailable() - $journey->people());
+
         $this->journeyRepository->update($journey);
-
-        dump($car);
-        dump($journey);
-
+        $this->carRepository->update($car);
     }
 }

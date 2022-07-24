@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\CarPooling\Domain\Model\Car;
 
+use App\CarPooling\Domain\Model\Journey\Journey;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\PersistentCollection;
 
 class Car
@@ -11,14 +14,12 @@ class Car
     private int $id;
     private int $seats;
     private int $seatsAvailable;
-    private PersistentCollection $journeys;
 
-    public function __construct(int $id, int $seats, int $seatsAvailable, PersistentCollection $journeys)
+    public function __construct(int $id, int $seats, int $seatsAvailable)
     {
         $this->id = $id;
         $this->seats = $seats;
         $this->seatsAvailable = $seatsAvailable;
-        $this->journeys = $journeys;
     }
 
     public static function create(int $id, int $seats): self
@@ -27,7 +28,6 @@ class Car
             $id,
             $seats,
             $seats,
-            null
         );
     }
 
@@ -46,9 +46,8 @@ class Car
         return $this->seatsAvailable;
     }
 
-    public function assignedJourneys(): PersistentCollection
+    public function setSeatsAvailable(int $seatsAvailable): void
     {
-        return $this->journeys;
+        $this->seatsAvailable = $seatsAvailable;
     }
-
 }

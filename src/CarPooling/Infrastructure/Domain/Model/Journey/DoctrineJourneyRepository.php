@@ -61,7 +61,7 @@ class DoctrineJourneyRepository extends ServiceEntityRepository implements Journ
             'id' => $journey->id(),
             'people' => $journey->people(),
             'car_assigned' => $journey->carAssigned(),
-            'date_request' => $journey->dateRequest()->getTimestamp(),
+            'date_request' => $journey->dateRequest()->format('Y-m-d H:i:s'),
         ];
     }
 
