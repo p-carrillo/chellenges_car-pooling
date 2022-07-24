@@ -26,9 +26,9 @@ class DropOffGroupService
 
         if (null !== $car) {
             $car->setSeatsAvailable($car->seatsAvailable() + $journey->people());
+            $this->carRepository->update($car);
         }
 
         $this->journeyRepository->remove($journey);
-        $this->carRepository->update($car);
     }
 }
