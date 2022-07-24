@@ -16,4 +16,16 @@ journey:
     defaults:
         _controller: App\CarPooling\Infrastructure\UI\Http\Controller\Journey\RequestJourneyController
 
+locate:
+    path: locate
+    methods: [ POST ]
+    defaults:
+        _controller: App\CarPooling\Infrastructure\UI\Http\Controller\Journey\RequestLocationController
+
+drop_off:
+    path: dropoff
+    methods: [ POST ]
+    defaults:
+        _controller: App\CarPooling\Infrastructure\UI\Http\Controller\Journey\RequestDropOffController
+
 

@@ -55,6 +55,13 @@ class DoctrineJourneyRepository extends ServiceEntityRepository implements Journ
         $this->connection->executeStatement('DELETE FROM journey');
     }
 
+    public function remove(Journey $journey): void
+    {
+        $sql = 'DELETE FROM journey 
+            WHERE id = :id';
+        $this->connection->executeStatement($sql, ['id' => $journey->id()]);
+    }
+
     private function saveParameters(Journey $journey): array
     {
         return [
@@ -63,16 +70,6 @@ class DoctrineJourneyRepository extends ServiceEntityRepository implements Journ
             'car_assigned' => $journey->carAssigned(),
             'date_request' => $journey->dateRequest()->format('Y-m-d H:i:s'),
         ];
-    }
-
-    private function buildJourney(array $data)
-    {
-        return new Journey(
-            $data['id'],
-            $data['people'],
-            $data['car_assigned_id'],
-            $data['date_request'],
-        );
     }
 
 }
