@@ -8,6 +8,7 @@ use App\CarPooling\Application\Command\Car\SetCarFleet\SetCarFleetCommand;
 use App\CarPooling\Domain\Model\Car\Car;
 use Doctrine\DBAL\Types\Types;
 use Gonsandia\CarPoolingChallenge\Infrastructure\Exception\InvalidContentTypeException;
+use JsonException;
 use League\Tactician\CommandBus;
 use PhpParser\Node\Expr\Throw_;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -37,12 +38,12 @@ class SetCarFleetController
                 'Car fleet has been loaded',
                 JsonResponse::HTTP_OK
             );
-        } catch (BadRequestException $exception) {
+        } catch (BadRequestException | JsonException) {
             return new JsonResponse(
                 'Bad Request',
                 JsonResponse::HTTP_BAD_REQUEST
             );
-        } catch (TypeError $exception) {
+        } catch (TypeError) {
             return new JsonResponse(
                 'Unsupported Media Type',
                 JsonResponse::HTTP_UNSUPPORTED_MEDIA_TYPE
@@ -56,19 +57,19 @@ class SetCarFleetController
             throw new TypeError();
         }
 
-        $fleetRequest = json_decode($request->getContent());
+        $fleetRequest = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         foreach ($fleetRequest as $carRequest) {
             $this->validateCarRequest($carRequest);
-            $carFleet[] = Car::create($carRequest->id, $carRequest->seats);
+            $carFleet[] = Car::create($carRequest['id'], $carRequest['seats']);
         }
 
         return $carFleet;
     }
 
-    private function validateCarRequest( \stdClass $carRequest) :void
+    private function validateCarRequest( array $carRequest) :void
     {
-        if ( !isset($carRequest->id) || !isset($carRequest->seats))  {
+        if ( !isset($carRequest['id']) || !isset($carRequest['seats']))  {
             Throw new TypeError();
         }
     }

@@ -6,6 +6,7 @@ namespace App\CarPooling\Infrastructure\UI\Http\Controller\Journey;
 
 use App\CarPooling\Application\Command\Journey\RequestJourney\RequestJourneyCommand;
 use Doctrine\DBAL\Types\Types;
+use JsonException;
 use League\Tactician\CommandBus;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,24 +25,23 @@ class RequestJourneyController
     public function __invoke(Request $request)
     {
         try {
-
             $input = $this->RetrieveReeuestValidatedOrFail($request);
 
             $this->commandBus->handle(new RequestJourneyCommand(
-                $input->id,
-                $input->people
+                $input['id'],
+                $input['people']
             ));
 
             return new JsonResponse(
-                '',
+                 "",
                 JsonResponse::HTTP_OK
             );
-        } catch (BadRequestException $exception) {
+        } catch (BadRequestException | JsonException) {
             return new JsonResponse(
                 'Bad Request',
                 JsonResponse::HTTP_BAD_REQUEST
             );
-        } catch (TypeError $exception) {
+        } catch (TypeError) {
             return new JsonResponse(
                 'Unsupported Media Type',
                 JsonResponse::HTTP_UNSUPPORTED_MEDIA_TYPE
@@ -49,15 +49,15 @@ class RequestJourneyController
         }
     }
 
-    private function RetrieveReeuestValidatedOrFail(Request $request) :\stdClass
+    private function RetrieveReeuestValidatedOrFail(Request $request) :array
     {
         if ($request->getContentType() !== Types::JSON) {
             throw new TypeError();
         }
 
-        $journeyRequest = json_decode($request->getContent());
+        $journeyRequest = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        if ( !isset($journeyRequest->id) || !isset($journeyRequest->people))  {
+        if ( !isset($journeyRequest['id']) || !isset($journeyRequest['people']))  {
             Throw new TypeError();
         }
 

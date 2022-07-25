@@ -42,7 +42,7 @@ class RequestDropOffController
             );
         } catch (NotFoundHttpException $exception) {
             return new JsonResponse(
-                'Group not found',
+                "",
                 JsonResponse::HTTP_NOT_FOUND
             );
         } catch (BadRequestException $exception) {
