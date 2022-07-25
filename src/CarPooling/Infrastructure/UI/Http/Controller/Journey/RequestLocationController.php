@@ -51,7 +51,7 @@ class RequestLocationController
             );
         } catch (NotFoundHttpException $exception) {
             return new JsonResponse(
-                'Group not found',
+                null,
                 JsonResponse::HTTP_NOT_FOUND
             );
         } catch (BadRequestException $exception) {

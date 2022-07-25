@@ -33,7 +33,7 @@ class RequestJourneyController
             ));
 
             return new JsonResponse(
-                 "",
+                 null,
                 JsonResponse::HTTP_OK
             );
         } catch (BadRequestException | JsonException) {
