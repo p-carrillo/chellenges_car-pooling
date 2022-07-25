@@ -6,9 +6,11 @@ namespace App\CarPooling\Infrastructure\UI\Http\Controller\Car;
 
 use App\CarPooling\Application\Command\Car\SetCarFleet\SetCarFleetCommand;
 use League\Tactician\CommandBus;
+use PhpParser\Node\Expr\Throw_;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use TypeError;
 
 class SetCarFleetController
 {
@@ -24,6 +26,10 @@ class SetCarFleetController
         try {
             $input = json_decode($request->getContent());
 
+            if ( !is_array($input) ) {
+                Throw new BadRequestException();
+            }
+
             $this->commandBus->handle(new SetCarFleetCommand(
                 $input
             ));
@@ -36,6 +42,11 @@ class SetCarFleetController
             return new JsonResponse(
                 'Bad Request',
                 JsonResponse::HTTP_BAD_REQUEST
+            );
+        } catch (TypeError $exception) {
+            return new JsonResponse(
+                'Unsupported Media Type',
+                JsonResponse::HTTP_UNSUPPORTED_MEDIA_TYPE
             );
         }
     }

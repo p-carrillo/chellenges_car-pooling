@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use TypeError;
 
 class RequestDropOffController
 {
@@ -23,14 +24,19 @@ class RequestDropOffController
     public function __invoke(Request $request)
     {
         try {
-            $journeyId = $request->get('ID') ?? $request->get('id');
+            $journeyId = $request->get('ID');
+
+            if ( null === $journeyId ) {
+                Throw new BadRequestException();
+            }
+
             $this->commandBus->handle(new RequestDropOffCommand(
-                (int)$journeyId,
+                $journeyId,
             ));
 
             return new JsonResponse(
-                'Group successfully dropped',
-                JsonResponse::HTTP_OK
+                '',
+                JsonResponse::HTTP_NO_CONTENT
             );
         } catch (NotFoundHttpException $exception) {
             return new JsonResponse(
@@ -41,6 +47,11 @@ class RequestDropOffController
             return new JsonResponse(
                 'Bad Request',
                 JsonResponse::HTTP_BAD_REQUEST
+            );
+        } catch (TypeError $exception) {
+            return new JsonResponse(
+                'Unsupported Media Type',
+                JsonResponse::HTTP_UNSUPPORTED_MEDIA_TYPE
             );
         }
     }
