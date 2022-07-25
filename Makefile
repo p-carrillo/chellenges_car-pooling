@@ -35,7 +35,10 @@ dockerize: build
 
 
 # Install Project to make it run in local environment.
-install: purge build up composer-install migrations
+install: build up composer-install migrations
+	@echo -e '\n\e[32mEnvironment created successfully !\n'
+
+purge-and-install: purge build up composer-install migrations
 	@echo -e '\n\e[32mEnvironment created successfully !\n'
 
 purge: down rm
@@ -43,11 +46,11 @@ purge: down rm
 
 build:
 	docker build -t $(DOCKER_IMAGE) .
-	docker run -itd -p 8000:8000 --name $(DOCKER_CONTAINER) $(DOCKER_IMAGE)
+	docker run -itd -p 9091:8000 --name $(DOCKER_CONTAINER) $(DOCKER_IMAGE)
 
 up:
 	docker start $(DOCKER_CONTAINER)
-	docker exec -it $(DOCKER_CONTAINER) symfony server:start -d
+	docker exec -it $(DOCKER_CONTAINER) symfony server:start --port=8000 -d
 
 down:
 	docker stop $(DOCKER_CONTAINER)
