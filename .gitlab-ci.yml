@@ -1,17 +1,6 @@
 stages:
-  - validation
   - docker
   - acceptance
-
-test:
-  stage: validation
-  image: composer:2.1
-  before_script:
-    # Install all project dependencies
-    - composer install
-  script:
-    - echo "Checking code standars and running Tests"
-    - make test-unit
 
 build_image:
   stage: docker
