@@ -16,6 +16,7 @@ acceptance:
   image: cabify/challenge:latest
   stage: acceptance
   only:
+    - main
     - master
   dependencies: []
   services:
