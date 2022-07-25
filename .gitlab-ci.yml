@@ -14,7 +14,6 @@ build:
   script:
     - echo ${CI_JOB_TOKEN} | docker login --password-stdin -u ${CI_REGISTRY_USER} ${CI_REGISTRY}
     - docker build . -t ${CI_REGISTRY_IMAGE}
-    - docker run -itd -p 9091:8000 ${CI_REGISTRY_IMAGE}
     - docker push ${CI_REGISTRY_IMAGE}
 
 acceptance:
