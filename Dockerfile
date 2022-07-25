@@ -19,7 +19,9 @@ RUN /usr/bin/sqlite3 /db/database.sqlite
 WORKDIR /car-pool-challenge
 ADD . ./
 
-RUN make ci-install
+RUN symfony server:start --port=9091 -d
+RUN composer install --no-interaction -o
+RUN bin/console --no-interaction doctrine:migrations:migrate
 
 EXPOSE 9091
 
