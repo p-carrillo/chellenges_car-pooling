@@ -14,6 +14,7 @@ use PhpParser\Node\Expr\Throw_;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use TypeError;
 
 class SetCarFleetController
@@ -34,19 +35,19 @@ class SetCarFleetController
                 $carFleet
             ));
 
-            return new JsonResponse(
-                'Car fleet has been loaded',
-                JsonResponse::HTTP_OK
+            return new Response(
+                null,
+                Response::HTTP_OK
             );
         } catch (BadRequestException | JsonException) {
-            return new JsonResponse(
-                'Bad Request',
-                JsonResponse::HTTP_BAD_REQUEST
+            return new Response(
+                null,
+                Response::HTTP_BAD_REQUEST
             );
         } catch (TypeError) {
-            return new JsonResponse(
-                'Unsupported Media Type',
-                JsonResponse::HTTP_UNSUPPORTED_MEDIA_TYPE
+            return new Response(
+                null,
+                Response::HTTP_UNSUPPORTED_MEDIA_TYPE
             );
         }
     }

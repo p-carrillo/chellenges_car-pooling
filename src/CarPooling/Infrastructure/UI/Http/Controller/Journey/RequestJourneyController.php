@@ -11,6 +11,7 @@ use League\Tactician\CommandBus;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use TypeError;
 
 class RequestJourneyController
@@ -32,19 +33,19 @@ class RequestJourneyController
                 $input['people']
             ));
 
-            return new JsonResponse(
+            return new Response(
                  null,
-                JsonResponse::HTTP_OK
+                Response::HTTP_OK
             );
         } catch (BadRequestException | JsonException) {
-            return new JsonResponse(
-                'Bad Request',
-                JsonResponse::HTTP_BAD_REQUEST
+            return new Response(
+                null,
+                Response::HTTP_BAD_REQUEST
             );
         } catch (TypeError) {
-            return new JsonResponse(
-                'Unsupported Media Type',
-                JsonResponse::HTTP_UNSUPPORTED_MEDIA_TYPE
+            return new Response(
+                null,
+                Response::HTTP_UNSUPPORTED_MEDIA_TYPE
             );
         }
     }

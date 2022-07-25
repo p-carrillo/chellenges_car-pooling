@@ -9,6 +9,7 @@ use League\Tactician\CommandBus;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use TypeError;
 
@@ -36,24 +37,24 @@ class RequestDropOffController
                 (int)$journeyId,
             ));
 
-            return new JsonResponse(
-                '',
-                JsonResponse::HTTP_NO_CONTENT
+            return new Response(
+                null,
+                Response::HTTP_NO_CONTENT
             );
         } catch (NotFoundHttpException $exception) {
-            return new JsonResponse(
-                "",
-                JsonResponse::HTTP_NOT_FOUND
+            return new Response(
+                null,
+                Response::HTTP_NOT_FOUND
             );
         } catch (BadRequestException $exception) {
-            return new JsonResponse(
-                'Bad Request',
-                JsonResponse::HTTP_BAD_REQUEST
+            return new Response(
+                null,
+                Response::HTTP_BAD_REQUEST
             );
         } catch (TypeError $exception) {
-            return new JsonResponse(
-                'Unsupported Media Type',
-                JsonResponse::HTTP_UNSUPPORTED_MEDIA_TYPE
+            return new Response(
+                null,
+                Response::HTTP_UNSUPPORTED_MEDIA_TYPE
             );
         }
     }
