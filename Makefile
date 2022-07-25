@@ -50,11 +50,11 @@ purge: down rm
 
 build:
 	docker build -t $(DOCKER_IMAGE) .
-	docker run -itd -p 9091:8000 --name $(DOCKER_CONTAINER) $(DOCKER_IMAGE)
+	docker run -itd -p 9091:9091 --name $(DOCKER_CONTAINER) $(DOCKER_IMAGE)
 
 up:
 	docker start $(DOCKER_CONTAINER)
-	docker exec -it $(DOCKER_CONTAINER) symfony server:start --port=8000 -d
+#	docker exec -it $(DOCKER_CONTAINER) symfony server:start --port=8000 -d
 
 down:
 	docker stop $(DOCKER_CONTAINER)
