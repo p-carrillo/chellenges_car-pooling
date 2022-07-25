@@ -8,7 +8,6 @@ use App\CarPooling\Domain\Model\Car\CarRepositoryInterface;
 use App\CarPooling\Domain\Model\Journey\Journey;
 use App\CarPooling\Domain\Model\Journey\JourneyRepositoryInterface;
 
-
 class AssignGroupToCarIfAvailableService
 {
     private CarRepositoryInterface $carRepository;

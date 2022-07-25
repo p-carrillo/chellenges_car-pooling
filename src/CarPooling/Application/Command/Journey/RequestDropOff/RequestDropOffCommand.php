@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\CarPooling\Application\Command\Journey\RequestDropOff;
 
-
 class RequestDropOffCommand
 {
     private int $id;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\CarPooling\Application\Command\Journey\RequestLocation;
 
-
 class RequestLocationCommand
 {
     private int $id;

@@ -18,6 +18,7 @@ RUN /usr/bin/sqlite3 /db/database.sqlite
 
 WORKDIR /car-pool-challenge
 ADD . ./
+
 RUN composer install --no-interaction -o
 
 EXPOSE 8000

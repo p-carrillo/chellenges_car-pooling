@@ -16,8 +16,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class RequestLocationHandlerTest extends TestCase
 {
     private JourneyRepositoryInterface $repository;
-    private Journey $journey;
-    private Car $car;
     private RequestLocationHandler $handler;
 
 

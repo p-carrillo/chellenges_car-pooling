@@ -8,6 +8,8 @@ class StatusController
 {
     public function __invoke(): JsonResponse
     {
-        return new JsonResponse('testing symfony');
-    }
+        return new JsonResponse(
+            '',
+            JsonResponse::HTTP_OK
+        );    }
 }

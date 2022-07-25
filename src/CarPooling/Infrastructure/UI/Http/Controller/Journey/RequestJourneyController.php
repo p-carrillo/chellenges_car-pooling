@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\CarPooling\Infrastructure\UI\Http\Controller\Journey;
 
-use App\CarPooling\Application\Command\Car\SetCarFleet\SetCarFleetCommand;
 use App\CarPooling\Application\Command\Journey\RequestJourney\RequestJourneyCommand;
 use League\Tactician\CommandBus;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;

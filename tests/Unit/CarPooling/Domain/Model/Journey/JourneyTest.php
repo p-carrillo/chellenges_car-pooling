@@ -2,7 +2,6 @@
 
 namespace App\Tests\Unit\CarPooling\Domain\Model\Journey;
 
-use App\CarPooling\Domain\Model\Journey\Journey;
 use App\Tests\Unit\CarPooling\Domain\Model\Car\CarFactory;
 use PHPUnit\Framework\TestCase;
 

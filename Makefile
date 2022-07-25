@@ -58,3 +58,7 @@ rm:
 
 cache-clear:
 	docker exec -it $(DOCKER_CONTAINER) bin/console cache:clear
+
+test-unit:
+	docker exec -it $(DOCKER_CONTAINER) php bin/phpunit
+

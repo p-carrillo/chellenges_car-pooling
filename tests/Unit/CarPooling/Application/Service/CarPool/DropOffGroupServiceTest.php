@@ -16,8 +16,6 @@ class DropOffGroupServiceTest extends TestCase
     private CarRepositoryInterface $carRepository;
     private JourneyRepositoryInterface $journeyRepository;
     private DropOffGroupService $service;
-    private Journey $journey;
-    private Car $car;
 
 
     protected function setUp(): void

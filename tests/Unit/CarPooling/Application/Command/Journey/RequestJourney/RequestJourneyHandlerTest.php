@@ -9,7 +9,6 @@ use App\CarPooling\Application\Command\Journey\RequestJourney\RequestJourneyHand
 use App\CarPooling\Application\Service\CarPool\AssignGroupToCarIfAvailableService;
 use App\CarPooling\Domain\Model\Journey\Journey;
 use App\CarPooling\Domain\Model\Journey\JourneyRepositoryInterface;
-use App\Classroom\Application\Exception\Student\StudentDoesNotBelongInAcademyException;
 use PHPUnit\Framework\TestCase;
 
 class RequestJourneyHandlerTest extends TestCase

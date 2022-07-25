@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\CarPooling\Infrastructure\UI\Http\Controller\Journey;
 
 use App\CarPooling\Application\Command\Journey\RequestLocation\RequestLocationCommand;
-use App\CarPooling\Domain\Model\Car\Car;
 use App\CarPooling\Domain\Model\Car\CarView;
 use League\Tactician\CommandBus;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;

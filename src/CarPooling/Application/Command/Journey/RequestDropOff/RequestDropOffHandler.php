@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace App\CarPooling\Application\Command\Journey\RequestDropOff;
 
-use App\CarPooling\Application\Service\CarPool\AssignGroupToCarIfAvailableService;
 use App\CarPooling\Application\Service\CarPool\DropOffGroupService;
-use App\CarPooling\Domain\Model\Car\Car;
-use App\CarPooling\Domain\Model\Car\CarView;
-use App\CarPooling\Domain\Model\Journey\Journey;
 use App\CarPooling\Domain\Model\Journey\JourneyRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

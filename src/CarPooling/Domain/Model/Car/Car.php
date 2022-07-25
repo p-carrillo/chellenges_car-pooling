@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace App\CarPooling\Domain\Model\Car;
 
-use App\CarPooling\Domain\Model\Journey\Journey;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\PersistentCollection;
-
 class Car
 {
     private int $id;

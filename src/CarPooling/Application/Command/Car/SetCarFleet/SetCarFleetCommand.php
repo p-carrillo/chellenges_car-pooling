@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\CarPooling\Application\Command\Car\SetCarFleet;
 
-
 class SetCarFleetCommand
 {
     private array $carFleet;

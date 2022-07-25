@@ -14,7 +14,7 @@ class SetCarFleetHandlerTest extends TestCase
 {
     private CarRepositoryInterface $repository;
     private ResetApplicationService $resetApplicationService;
-    private SetCarFleetHandler $setCarFleetHandler;
+    private SetCarFleetHandler $handler;
 
 
     protected function setUp(): void
