@@ -40,16 +40,21 @@ install: build up composer-install migrations
 purge-and-install: purge build up composer-install migrations
 	@echo -e '\n\e[32mEnvironment created successfully !\n'
 
+install-ci:
+	docker build -t $(DOCKER_IMAGE) .
+	docker run -itd --name $(DOCKER_CONTAINER) $(DOCKER_IMAGE)
+	docker start $(DOCKER_CONTAINER)
+
 purge: down rm
 	@echo -e '\n\e[32mProject purged successfully !\n'
 
 build:
 	docker build -t $(DOCKER_IMAGE) .
-	docker run -itd -p 9091:8000 --name $(DOCKER_CONTAINER) $(DOCKER_IMAGE)
+	docker run -itd --name $(DOCKER_CONTAINER) $(DOCKER_IMAGE)
 
 up:
 	docker start $(DOCKER_CONTAINER)
-	docker exec -it $(DOCKER_CONTAINER) symfony server:start --port=8000 -d
+	docker exec -it $(DOCKER_CONTAINER) symfony server:start --port=9091 -d
 
 down:
 	docker stop $(DOCKER_CONTAINER)
