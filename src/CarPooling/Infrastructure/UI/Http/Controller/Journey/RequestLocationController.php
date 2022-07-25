@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use TypeError;
 
 class RequestLocationController
 {
@@ -24,10 +25,15 @@ class RequestLocationController
     public function __invoke(Request $request)
     {
         try {
-            $journeyId = $request->get('ID') ?? $request->get('id');
+            $journeyId = $request->get('ID');
+
+            if ( null === $journeyId ) {
+                Throw new BadRequestException();
+            }
+
             /** @var CarView $carView */
             $carView = $this->commandBus->handle(new RequestLocationCommand(
-                (int)$journeyId,
+                $journeyId,
             ));
 
             if (null === $carView) {
@@ -50,6 +56,11 @@ class RequestLocationController
             return new JsonResponse(
                 'Bad Request',
                 JsonResponse::HTTP_BAD_REQUEST
+            );
+        } catch (TypeError $exception) {
+            return new JsonResponse(
+                'Unsupported Media Type',
+                JsonResponse::HTTP_UNSUPPORTED_MEDIA_TYPE
             );
         }
     }
