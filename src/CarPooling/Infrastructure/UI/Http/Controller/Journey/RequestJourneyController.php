@@ -30,12 +30,12 @@ class RequestJourneyController
             ));
 
             return new JsonResponse(
-                '',
+                'Journey registered',
                 JsonResponse::HTTP_OK
             );
         } catch (BadRequestException $exception) {
             return new JsonResponse(
-                '',
+                'Bad Request',
                 JsonResponse::HTTP_BAD_REQUEST
             );
         }

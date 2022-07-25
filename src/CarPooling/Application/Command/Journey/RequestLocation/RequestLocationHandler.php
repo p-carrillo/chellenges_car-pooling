@@ -19,7 +19,7 @@ class RequestLocationHandler
         $this->repository = $repository;
     }
 
-    public function handle(RequestLocationCommand $command): CarView
+    public function handle(RequestLocationCommand $command): ?CarView
     {
         $journey = $this->repository->getOneById($command->id());
 
@@ -28,6 +28,6 @@ class RequestLocationHandler
         }
 
         $car = $journey->carAssigned();
-        return CarView::create($car->id(), $car->seats());
+        return $car ? CarView::create($car->id(), $car->seats()) : null;
     }
 }

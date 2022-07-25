@@ -29,12 +29,12 @@ class SetCarFleetController
             ));
 
             return new JsonResponse(
-                '',
+                'Car fleet has been loaded',
                 JsonResponse::HTTP_OK
             );
         } catch (BadRequestException $exception) {
             return new JsonResponse(
-                '',
+                'Bad Request',
                 JsonResponse::HTTP_BAD_REQUEST
             );
         }

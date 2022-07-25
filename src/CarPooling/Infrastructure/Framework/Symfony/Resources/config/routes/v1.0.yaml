@@ -1,8 +1,8 @@
-test:
-    path: test
+status:
+    path: status
     methods: [GET]
     defaults:
-        _controller: App\CarPooling\Infrastructure\UI\Http\Controller\TestController
+        _controller: App\CarPooling\Infrastructure\UI\Http\Controller\Status\StatusController
 
 cars:
     path: cars
