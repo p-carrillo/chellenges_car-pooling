@@ -1,6 +1,6 @@
 status:
     path: status
-    methods: [GET]
+    methods: [ GET ]
     defaults:
         _controller: App\CarPooling\Infrastructure\UI\Http\Controller\Status\StatusController
 

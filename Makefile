@@ -35,7 +35,7 @@ dockerize: build
 
 
 # Install Project to make it run in local environment.
-install: build up migrations
+install: purge build up composer-install migrations
 	@echo -e '\n\e[32mEnvironment created successfully !\n'
 
 purge: down rm
@@ -61,6 +61,9 @@ cache-clear:
 
 test-unit:
 	docker exec -it $(DOCKER_CONTAINER) php bin/phpunit
+
+composer-install:
+	docker exec -it $(DOCKER_CONTAINER) composer install --no-interaction -o
 
 migrations:
 	docker exec -it $(DOCKER_CONTAINER) bin/console --no-interaction doctrine:migrations:migrate

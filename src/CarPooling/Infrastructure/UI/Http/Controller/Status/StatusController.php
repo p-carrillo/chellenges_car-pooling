@@ -11,5 +11,6 @@ class StatusController
         return new JsonResponse(
             'Application is Up',
             JsonResponse::HTTP_OK
-        );    }
+        );
+    }
 }
