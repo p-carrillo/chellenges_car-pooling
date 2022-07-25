@@ -6,6 +6,8 @@ namespace App\CarPooling\Infrastructure\UI\Http\Controller\Car;
 
 use App\CarPooling\Application\Command\Car\SetCarFleet\SetCarFleetCommand;
 use App\CarPooling\Domain\Model\Car\Car;
+use Doctrine\DBAL\Types\Types;
+use Gonsandia\CarPoolingChallenge\Infrastructure\Exception\InvalidContentTypeException;
 use League\Tactician\CommandBus;
 use PhpParser\Node\Expr\Throw_;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -25,13 +27,7 @@ class SetCarFleetController
     public function __invoke(Request $request)
     {
         try {
-            $input = json_decode($request->getContent());
-
-            if ( !is_array($input) ) {
-                Throw new BadRequestException();
-            }
-
-            $carFleet = $this->createCarFleetOrFail($input);
+            $carFleet = $this->createCarFleetOrFail($request);
 
             $this->commandBus->handle(new SetCarFleetCommand(
                 $carFleet
@@ -54,9 +50,15 @@ class SetCarFleetController
         }
     }
 
-    private function createCarFleetOrFail(array $inputFleet) :array
+    private function createCarFleetOrFail(Request $request) :array
     {
-        foreach ($inputFleet as $carRequest) {
+        if ($request->getContentType() !== Types::JSON) {
+            throw new TypeError();
+        }
+
+        $fleetRequest = json_decode($request->getContent());
+
+        foreach ($fleetRequest as $carRequest) {
             $this->validateCarRequest($carRequest);
             $carFleet[] = Car::create($carRequest->id, $carRequest->seats);
         }

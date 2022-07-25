@@ -31,9 +31,11 @@ class RequestLocationController
                 Throw new BadRequestException();
             }
 
+            $this->validateJourneyIdRequest($journeyId);
+
             /** @var CarView $carView */
             $carView = $this->commandBus->handle(new RequestLocationCommand(
-                $journeyId,
+                (int)$journeyId,
             ));
 
             if (null === $carView) {
@@ -62,6 +64,13 @@ class RequestLocationController
                 'Unsupported Media Type',
                 JsonResponse::HTTP_UNSUPPORTED_MEDIA_TYPE
             );
+        }
+    }
+
+    private function validateJourneyIdRequest( string $journeyIdRequest) :void
+    {
+        if (!is_numeric($journeyIdRequest))  {
+            Throw new TypeError();
         }
     }
 }

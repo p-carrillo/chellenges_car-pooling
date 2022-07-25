@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\CarPooling\Infrastructure\UI\Http\Controller\Journey;
 
 use App\CarPooling\Application\Command\Journey\RequestJourney\RequestJourneyCommand;
+use Doctrine\DBAL\Types\Types;
 use League\Tactician\CommandBus;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,13 +24,8 @@ class RequestJourneyController
     public function __invoke(Request $request)
     {
         try {
-            $input = json_decode($request->getContent());
 
-            if ( null === $input ) {
-                Throw new BadRequestException();
-            }
-
-            $this->validateJourneyRequest($input);
+            $input = $this->RetrieveReeuestValidatedOrFail($request);
 
             $this->commandBus->handle(new RequestJourneyCommand(
                 $input->id,
@@ -53,10 +49,18 @@ class RequestJourneyController
         }
     }
 
-    private function validateJourneyRequest( \stdClass $carRequest) :void
+    private function RetrieveReeuestValidatedOrFail(Request $request) :\stdClass
     {
-        if ( !isset($carRequest->id) || !isset($carRequest->people))  {
+        if ($request->getContentType() !== Types::JSON) {
+            throw new TypeError();
+        }
+
+        $journeyRequest = json_decode($request->getContent());
+
+        if ( !isset($journeyRequest->id) || !isset($journeyRequest->people))  {
             Throw new TypeError();
         }
+
+        return $journeyRequest;
     }
 }
