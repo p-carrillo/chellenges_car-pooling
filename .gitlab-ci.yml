@@ -22,6 +22,7 @@ acceptance:
   stage: acceptance
   only:
     - master
+    - main
   dependencies: []
   services:
     - name: ${CI_REGISTRY_IMAGE}:latest
