@@ -19,5 +19,7 @@ RUN /usr/bin/sqlite3 /db/database.sqlite
 WORKDIR /car-pool-challenge
 ADD . ./
 
+RUN make ci-install
+
 EXPOSE 9091
 

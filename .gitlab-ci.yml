@@ -1,6 +1,6 @@
 stages:
   - build
-  - acceptance
+#  - acceptance
 
 build:
   stage: build
@@ -16,15 +16,15 @@ build:
     - docker build . -t ${CI_REGISTRY_IMAGE}
     - docker push ${CI_REGISTRY_IMAGE}
 
-acceptance:
-  image: cabify/challenge:latest
-  stage: acceptance
-  only:
-    - main
-    - master
-  dependencies: []
-  services:
-    - name: ${CI_REGISTRY_IMAGE}:latest
-      alias: pooling
-  script:
-    - /harness --address http://pooling:9091 acceptance
+#acceptance:
+#  image: cabify/challenge:latest
+#  stage: acceptance
+#  only:
+#    - main
+#    - master
+#  dependencies: []
+#  services:
+#    - name: ${CI_REGISTRY_IMAGE}:latest
+#      alias: pooling
+#  script:
+#    - /harness --address http://pooling:9091 acceptance
