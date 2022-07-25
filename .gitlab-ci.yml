@@ -1,6 +1,6 @@
 stages:
   - build
-  - test
+  - testing
 #  - acceptance
 
 build:
@@ -17,7 +17,7 @@ build:
     - docker build . -t ${CI_REGISTRY_IMAGE}
     - docker push ${CI_REGISTRY_IMAGE}
 
-test:
+unit_test:
   stage: testing
   dependencies: []
   services:
