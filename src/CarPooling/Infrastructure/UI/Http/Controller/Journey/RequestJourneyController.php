@@ -29,13 +29,15 @@ class RequestJourneyController
                 Throw new BadRequestException();
             }
 
+            $this->validateJourneyRequest($input);
+
             $this->commandBus->handle(new RequestJourneyCommand(
                 $input->id,
                 $input->people
             ));
 
             return new JsonResponse(
-                'Journey registered',
+                '',
                 JsonResponse::HTTP_OK
             );
         } catch (BadRequestException $exception) {
@@ -48,6 +50,13 @@ class RequestJourneyController
                 'Unsupported Media Type',
                 JsonResponse::HTTP_UNSUPPORTED_MEDIA_TYPE
             );
+        }
+    }
+
+    private function validateJourneyRequest( \stdClass $carRequest) :void
+    {
+        if ( !isset($carRequest->id) || !isset($carRequest->people))  {
+            Throw new TypeError();
         }
     }
 }

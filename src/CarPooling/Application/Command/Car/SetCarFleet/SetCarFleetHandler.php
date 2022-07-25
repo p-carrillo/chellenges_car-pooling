@@ -26,12 +26,6 @@ class SetCarFleetHandler
     {
 
         $this->resetApplicationService->execute();
-
-        $carFleet = [];
-        foreach ($command->carFleet() as $carRequest) {
-            $carFleet[] = Car::create($carRequest->id, $carRequest->seats);
-        }
-
-        $this->repository->loadCarFleet($carFleet);
+        $this->repository->loadCarFleet($command->carFleet());
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\CarPooling\Infrastructure\UI\Http\Controller\Car;
 
 use App\CarPooling\Application\Command\Car\SetCarFleet\SetCarFleetCommand;
+use App\CarPooling\Domain\Model\Car\Car;
 use League\Tactician\CommandBus;
 use PhpParser\Node\Expr\Throw_;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -30,8 +31,10 @@ class SetCarFleetController
                 Throw new BadRequestException();
             }
 
+            $carFleet = $this->createCarFleetOrFail($input);
+
             $this->commandBus->handle(new SetCarFleetCommand(
-                $input
+                $carFleet
             ));
 
             return new JsonResponse(
@@ -48,6 +51,23 @@ class SetCarFleetController
                 'Unsupported Media Type',
                 JsonResponse::HTTP_UNSUPPORTED_MEDIA_TYPE
             );
+        }
+    }
+
+    private function createCarFleetOrFail(array $inputFleet) :array
+    {
+        foreach ($inputFleet as $carRequest) {
+            $this->validateCarRequest($carRequest);
+            $carFleet[] = Car::create($carRequest->id, $carRequest->seats);
+        }
+
+        return $carFleet;
+    }
+
+    private function validateCarRequest( \stdClass $carRequest) :void
+    {
+        if ( !isset($carRequest->id) || !isset($carRequest->seats))  {
+            Throw new TypeError();
         }
     }
 }

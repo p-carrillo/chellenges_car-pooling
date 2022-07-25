@@ -30,8 +30,10 @@ class RequestDropOffController
                 Throw new BadRequestException();
             }
 
+            $this->validateJourneyIdRequest($journeyId);
+
             $this->commandBus->handle(new RequestDropOffCommand(
-                $journeyId,
+                (int)$journeyId,
             ));
 
             return new JsonResponse(
@@ -53,6 +55,13 @@ class RequestDropOffController
                 'Unsupported Media Type',
                 JsonResponse::HTTP_UNSUPPORTED_MEDIA_TYPE
             );
+        }
+    }
+
+    private function validateJourneyIdRequest( string $journeyIdRequest) :void
+    {
+        if (!is_numeric($journeyIdRequest))  {
+            Throw new TypeError();
         }
     }
 }
