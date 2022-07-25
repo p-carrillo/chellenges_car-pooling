@@ -43,9 +43,11 @@ class DoctrineJourneyRepository extends ServiceEntityRepository implements Journ
 
         $qb->update('journey:Journey', 'j')
             ->set('j.carAssigned', ':carAssigned')
+            ->set('j.people', ':people')
             ->where('j.id = :id')
             ->setParameter('id', $journey->id())
             ->setParameter('carAssigned', $journey->carAssigned())
+            ->setParameter('people', $journey->people())
             ->getQuery()
             ->execute();
     }

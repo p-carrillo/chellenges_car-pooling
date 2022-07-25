@@ -55,4 +55,9 @@ class Journey
     {
         $this->carAssigned = $car;
     }
+
+    public function setPeople(int $people): void
+    {
+        $this->people = $people;
+    }
 }

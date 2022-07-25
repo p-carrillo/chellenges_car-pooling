@@ -31,6 +31,7 @@ class RequestJourneyHandler
             $this->repository->create($journey);
         }
 
+        $journey->setPeople($command->people());
         $this->assignToCarService->execute($journey);
     }
 }

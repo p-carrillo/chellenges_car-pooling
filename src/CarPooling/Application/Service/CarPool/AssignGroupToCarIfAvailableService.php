@@ -23,7 +23,7 @@ class AssignGroupToCarIfAvailableService
     {
         $car = $this->carRepository->findAvailableCar($journey->people());
 
-        if (null === $car) {
+        if (null === $car || null === $journey->carAssigned()) {
             return;
         }
 
