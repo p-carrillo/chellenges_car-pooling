@@ -23,7 +23,7 @@ class RequestJourneyController
         $this->commandBus = $commandBus;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         try {
             $input = $this->RetrieveReeuestValidatedOrFail($request);
