@@ -1,8 +1,69 @@
+# Car Pooling Service Challenge By Pablo CArrillo
+
+## Project Installation and usage.
+
+Use `make install` to build a docker self container with the running application, 
+all endpoints can be accessed in `localhost:9091`
+
+Use `make test-unit` to run unit tests
+
+Use `make purge` to remove all Docker images and containers from the system.
+
+## Project structure and decisions made
+
+- The challenge is made as a Symfony Application, I choose symfony and PHP
+because they are the language and framework which I feel more confortable.
+- The approach is done by ports and adapters architecture, in the src/CarPooling folder 
+you can find classes as follows:
+  - **Domain:** Here you can find the model and the event system 
+  - **Application:** Here are Commands and handlers for each controller.
+  Listeners and Services needed are also in their respective folders.
+  - **Infrastructure:** Here are the Domain implementation by doctrine ORM, 
+  also all the configuration needed (Routing, interface implementation and auto wiring)
+  is under Framework folder. Under UI your will find the controllers for each endpoint.
+  - **test**: Here are the unit testing system following the project folder structure
+  - **everything else in root** Here are symfony configs, CI and docker MakeFile.
+- Ports and adapters approach has been chosen due to the easy decoupling and escalation 
+that this structure brig by itself. 
+
+## Assumptions and misleads
+
+Some assumptions and misleads have been made in the development of the application due
+lack of time management:
+
+- Shared bounded context is missing as it is a small application, so event implementations 
+are inside CarPooling context, and they shouldn't
+- Command bus implementation is not decoupled from Infrastructure, I did leave this for 
+the last days and finally run out of time.
+- Input validation are in their respective controllers, they should be also decoupled under 
+an Input folder in Infrastructure UI
+- Exception are not managed under Domain, but with the raw exceptions types given by the 
+framework. They should be declared under Domain throw from handlers or services and 
+be called from Controllers, implementing also custom outputs for each of them.
+- Commits are a mess. I started to code in a private repository and finally didn't have 
+time to remade them properly. Bad decision indeed.
+- Not all application is unit tested.
+- No Integration tests has been made as acceptance stage in CI make the job they are meant.
+- Dockerfile is copy/pasted form the internet to make the project work. Couldn't manage
+to make it work by myself. Though you can see my tries under the endless test commits done.
+
+## Final Thoughts
+
+I really enjoyed the challenge, has been a great opportunity to make a hexagonal symfony
+project from scratch, as I had always been working in already developed product companies.
+
+The hardest part of the development was indeed the initial configuration of the project,
+like installing and make work things commandbus and events. Dockerize and understanding
+the gitlab CI was also a challenge.
+
+And that's all, thank you very much for the opportunity given, and thanks also in advance 
+for your time evaluating the challenge.
+
 # Car Pooling Service Challenge
 
 Design/implement a system to manage car pooling.
 
-At Cabify we provide the service of taking people from point A to point B.
+At Cabify we provide the service of taking people from point A to point B.  
 So far we have done it without sharing cars with multiple groups of people.
 This is an opportunity to optimize the use of resources by introducing car
 pooling.
