@@ -2,7 +2,6 @@
 
 namespace App\CarPooling\Infrastructure\UI\Http\Controller\Status;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class StatusController

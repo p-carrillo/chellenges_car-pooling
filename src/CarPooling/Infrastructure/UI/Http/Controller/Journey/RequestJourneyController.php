@@ -9,7 +9,6 @@ use Doctrine\DBAL\Types\Types;
 use JsonException;
 use League\Tactician\CommandBus;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use TypeError;

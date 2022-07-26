@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\CarPooling\Application\Command\Car\SetCarFleet;
 
 use App\CarPooling\Application\Service\CarPool\ResetApplicationService;
-use App\CarPooling\Domain\Model\Car\Car;
 use App\CarPooling\Domain\Model\Car\CarRepositoryInterface;
 
 class SetCarFleetHandler
