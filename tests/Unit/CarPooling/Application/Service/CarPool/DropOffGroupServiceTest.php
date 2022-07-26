@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\CarPooling\Application\Service\CarPool;
 
 use App\CarPooling\Application\Service\CarPool\DropOffGroupService;
+use App\CarPooling\Domain\Event\DomainEventPublisher;
 use App\CarPooling\Domain\Model\Car\Car;
 use App\CarPooling\Domain\Model\Car\CarRepositoryInterface;
 use App\CarPooling\Domain\Model\Journey\Journey;
@@ -13,21 +14,21 @@ use PHPUnit\Framework\TestCase;
 
 class DropOffGroupServiceTest extends TestCase
 {
-    private CarRepositoryInterface $carRepository;
     private JourneyRepositoryInterface $journeyRepository;
+    private DomainEventPublisher $publisher;
     private DropOffGroupService $service;
 
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->carRepository = $this->createMock(CarRepositoryInterface::class);
         $this->journeyRepository = $this->createMock(JourneyRepositoryInterface::class);
+        $this->publisher = $this->createMock(DomainEventPublisher::class);
         $this->journey = $this->createMock(Journey::class);
         $this->car = $this->createMock(Car::class);
         $this->service = new DropOffGroupService(
-            $this->carRepository,
             $this->journeyRepository,
+            $this->publisher,
         );
     }
 
@@ -41,8 +42,8 @@ class DropOffGroupServiceTest extends TestCase
             ->method('remove')
         ;
 
-        $this->carRepository->expects(static::once())
-            ->method('update')
+        $this->publisher->expects(static::once())
+            ->method('publish')
         ;
 
         $this->service->execute($journey);
@@ -56,8 +57,8 @@ class DropOffGroupServiceTest extends TestCase
             ->method('remove')
         ;
 
-        $this->carRepository->expects(static::never())
-            ->method('update')
+        $this->publisher->expects(static::never())
+            ->method('publish')
         ;
 
         $this->service->execute($journey);

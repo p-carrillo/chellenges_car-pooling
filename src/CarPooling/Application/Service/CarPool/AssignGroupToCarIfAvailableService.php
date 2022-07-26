@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\CarPooling\Application\Service\CarPool;
 
+use App\CarPooling\Domain\Event\DomainEventPublisher;
 use App\CarPooling\Domain\Model\Car\CarRepositoryInterface;
+use App\CarPooling\Domain\Model\Journey\Event\JourneyWasAssignedToCarEvent;
 use App\CarPooling\Domain\Model\Journey\Journey;
 use App\CarPooling\Domain\Model\Journey\JourneyRepositoryInterface;
 
@@ -12,11 +14,17 @@ class AssignGroupToCarIfAvailableService
 {
     private CarRepositoryInterface $carRepository;
     private JourneyRepositoryInterface $journeyRepository;
+    private DomainEventPublisher $publisher;
 
-    public function __construct(CarRepositoryInterface $carRepository, JourneyRepositoryInterface $journeyRepository)
+    public function __construct(
+        CarRepositoryInterface     $carRepository,
+        JourneyRepositoryInterface $journeyRepository,
+        DomainEventPublisher       $publisher,
+    )
     {
         $this->carRepository = $carRepository;
         $this->journeyRepository = $journeyRepository;
+        $this->publisher = $publisher;
     }
 
     public function execute(Journey $journey)
@@ -28,9 +36,7 @@ class AssignGroupToCarIfAvailableService
         }
 
         $journey->assignCar($car);
-        $car->setSeatsAvailable($car->seatsAvailable() - $journey->people());
-
         $this->journeyRepository->update($journey);
-        $this->carRepository->update($car);
+        $this->publisher->publish(new JourneyWasAssignedToCarEvent($car->id(), $journey->people()));
     }
 }
