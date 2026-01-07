@@ -1,4 +1,4 @@
-# Car Pooling Service Challenge By Pablo CArrillo
+# Car Pooling Service Challenge By Pablo Carrillo
 
 ## Project Installation and usage.
 
